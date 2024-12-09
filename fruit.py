@@ -1,6 +1,8 @@
-import pygame.sprite
-from colors import Colors
 import random
+
+import pygame.sprite
+
+from colors import Colors
 
 
 class Fruit(pygame.sprite.Sprite):
@@ -9,6 +11,7 @@ class Fruit(pygame.sprite.Sprite):
         self.width: int = width
         self.image: pygame.Surface = pygame.Surface((self.width, self.width))
         self.image.fill(Colors.RED)
+        pygame.draw.rect(self.image, Colors.BLACK, self.image.get_rect(), 1)
         self.position: dict[str, int] = {'x': 0, 'y': 0}
         self.rect: pygame.Rect = self.image.get_rect(topleft=(self.position['x'], self.position['y']))
         self.position_update(pygame.display.get_surface().get_rect())
