@@ -14,10 +14,8 @@ class Fruit(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, Colors.BLACK, self.image.get_rect(), 1)
         self.position: dict[str, int] = {'x': 0, 'y': 0}
         self.rect: pygame.Rect = self.image.get_rect(topleft=(self.position['x'], self.position['y']))
-        self.position_update()
 
-    def position_update(self) -> None:
-        screen_rect: pygame.Rect = pygame.display.get_surface().get_rect()
-        self.position['x'] = random.randint(0, (screen_rect.width // self.width) - 1) * self.width
-        self.position['y'] = random.randint(0, (screen_rect.height // self.width) - 1) * self.width
+    def position_update(self, game_surface: pygame.Rect) -> None:
+        self.position['x'] = random.randint(0, (game_surface.width // self.width) - 1) * self.width
+        self.position['y'] = random.randint(0, (game_surface.height // self.width) - 1) * self.width
         self.rect.topleft = (self.position['x'], self.position['y'])
