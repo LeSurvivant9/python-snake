@@ -7,10 +7,9 @@ class Snake(pygame.sprite.Sprite):
     def __init__(self, width: int, sprite_group: pygame.sprite.Group) -> None:
         super().__init__(sprite_group)
         self.width: int = width
-        self.speed: int = self.width // 2
+        self.speed: int = 175
         self.direction: str = "right"
         self.move_timer: float = 0
-        self.move_delay: float = 0.1
 
         self.body: list[pygame.sprite.Sprite] = []
         for i in range(3):
@@ -25,16 +24,21 @@ class Snake(pygame.sprite.Sprite):
 
         self.image: pygame.Surface = self.body[0].image
         self.rect: pygame.Rect = self.body[0].rect
+        self.position: pygame.Vector2 = pygame.Vector2(self.rect.topleft)
 
-    def update(self, screen_rect: pygame.Rect, dt: float) -> None:
-        self.move_timer += dt
+    def update(self, dt: float) -> None:
         self.movement()
-        if self.move_timer >= self.move_delay:
-            self.move_timer = 0
+
+        self.move_timer += dt
+        movement_delay = self.width / self.speed
+        if self.move_timer >= movement_delay:
+            self.move_timer -= movement_delay
             for i in range(len(self.body) - 1, 0, -1):
                 self.body[i].rect.topleft = self.body[i - 1].rect.topleft
-            self.body[0].rect.x += ((self.direction == "right") - (self.direction == "left")) * self.width
-            self.body[0].rect.y += ((self.direction == "down") - (self.direction == "up")) * self.width
+
+            self.position.x += ((self.direction == "right") - (self.direction == "left")) * self.width
+            self.position.y += ((self.direction == "down") - (self.direction == "up")) * self.width
+            self.body[0].rect.topleft = (round(self.position.x), round(self.position.y))
 
     def movement(self) -> None:
         """
